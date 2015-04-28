@@ -405,10 +405,16 @@ def RMD160Final(ctx):
     RMD160Update(ctx, size, 8)
     return struct.pack("<5L", *ctx.state)
 
+if __name__ == '__main__':
+    assert '37f332f68db77bd9d7edd4969571ad671cf9dd3b' == \
+           new('The quick brown fox jumps over the lazy dog').hexdigest()
+    assert '132072df690933835eb8b6ad0b77e7b6f14acad7' == \
+           new('The quick brown fox jumps over the lazy cog').hexdigest()
+    assert '9c1185a5c5e9fc54612808977ee8f548b2258d31' == \
+           new('').hexdigest()
+    import os, hashlib
+    for i in xrange(100):
+        data = os.urandom(1000)
+        assert hashlib.new("ripemd160", data).hexdigest() == \
+               new(data).hexdigest()
 
-assert '37f332f68db77bd9d7edd4969571ad671cf9dd3b' == \
-       new('The quick brown fox jumps over the lazy dog').hexdigest()
-assert '132072df690933835eb8b6ad0b77e7b6f14acad7' == \
-       new('The quick brown fox jumps over the lazy cog').hexdigest()
-assert '9c1185a5c5e9fc54612808977ee8f548b2258d31' == \
-       new('').hexdigest()
