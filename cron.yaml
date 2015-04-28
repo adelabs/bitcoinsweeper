@@ -1,4 +1,4 @@
 cron:
 - description: sweep
-  url: /run
+  url: /run?num=60
   schedule: every 1 minutes

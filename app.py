@@ -15,10 +15,9 @@ Str32 = lambda s: ('\0'* (32 - len(s)) + s)[-32:]
 IntToStr32 = lambda i: Str32(IntToStr(i))
 
 Sha256 = lambda data: hashlib.sha256(data).digest()
-def Ripemd160(data):
-    h = hashlib.new("ripemd160")
-    h.update(data)
-    return h.digest()
+Ripemd160 = lambda data: hashlib.new("ripemd160", data).digest()
+import ripemd
+Ripemd160 = lambda data: ripemd.new(data).digest()
 Hash160 = lambda data: Ripemd160(Sha256(data))
 
 ##################################################
@@ -56,8 +55,6 @@ def PubkeyToHash(pubkey, compress=False):
 
 ##################################################
 # Query
-from google.appengine.api import urlfetch
-URLFetch = lambda url: urlfetch.fetch(url).content
 
 def QueryBalance(account):
     # text = '{"final_balance":1}'
@@ -89,8 +86,10 @@ def Sweep(privkey, pubkey, n):
     return privkey, pubkey
 
 ######################################################################
-from google.appengine.api import urlfetch
 
+##################################################
+from google.appengine.api import urlfetch
+URLFetch = lambda url: urlfetch.fetch(url).content
 
 ##################################################
 from google.appengine.ext import ndb
