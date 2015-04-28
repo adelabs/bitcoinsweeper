@@ -172,11 +172,7 @@ def RMD160Transform(state, block): #uint32 state[5], uchar block[64]
             x = struct.unpack('<16L', bytes(block[0:64]))
     else:
         raise "Error!!"
-    a = state[0]
-    b = state[1]
-    c = state[2]
-    d = state[3]
-    e = state[4]
+    a, b, c, d, e = state
 
     #/* Round 1 */
     a, c = R(a, b, c, d, e, F0, K0, 11,  0, x);
@@ -264,17 +260,9 @@ def RMD160Transform(state, block): #uint32 state[5], uchar block[64]
     c, e = R(c, d, e, a, b, F4, K4,  5, 15, x);
     b, d = R(b, c, d, e, a, F4, K4,  6, 13, x); #/* #79 */
 
-    aa = a;
-    bb = b;
-    cc = c;
-    dd = d;
-    ee = e;
+    aa, bb, cc, dd, ee = a, b, c, d, e
 
-    a = state[0]
-    b = state[1]
-    c = state[2]
-    d = state[3]
-    e = state[4]    
+    a, b, c, d, e = state
 
     #/* Parallel round 1 */
     a, c = R(a, b, c, d, e, F4, KK0,  8,  5, x)
@@ -362,15 +350,11 @@ def RMD160Transform(state, block): #uint32 state[5], uchar block[64]
     c, e = R(c, d, e, a, b, F0, KK4, 11,  9, x)
     b, d = R(b, c, d, e, a, F0, KK4, 11, 11, x) #/* #79 */
 
-    t = (state[1] + cc + d) % 0x100000000;
-    state[1] = (state[2] + dd + e) % 0x100000000;
-    state[2] = (state[3] + ee + a) % 0x100000000;
-    state[3] = (state[4] + aa + b) % 0x100000000;
-    state[4] = (state[0] + bb + c) % 0x100000000;
-    state[0] = t % 0x100000000;
-
-    pass
-
+    state[:] = [(state[1] + cc + d) % 0x100000000,
+                (state[2] + dd + e) % 0x100000000,
+                (state[3] + ee + a) % 0x100000000,
+                (state[4] + aa + b) % 0x100000000,
+                (state[0] + bb + c) % 0x100000000,]
 
 def RMD160Update(ctx, inp, inplen):
     if type(inp) == str:
