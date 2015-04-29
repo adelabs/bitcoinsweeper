@@ -1,0 +1,2 @@
+# bitcoinsweeper
+Sweeping bitcoin accounts
