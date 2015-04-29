@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ''' RIPEMD-160 implementation
 '''
-from struct import pack, unpack
+from struct import pack, unpack_from
 
 ######################################################################
 # Constants
@@ -73,7 +73,7 @@ def Ripemd160(data):
     data += '\x80' + '\0'*(64-(len(data)+1+8)%64) + pack('<Q', len(data)*8)
     state = INIT_STATE
     for i in xrange(0, len(data), 64):
-        state = Compression(state, unpack('<16L', data[i:i+64]))
+        state = Compression(state, unpack_from('<16L', data, i))
     return pack('<5L', *state)
 
 ######################################################################
