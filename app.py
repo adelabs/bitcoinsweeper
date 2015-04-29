@@ -15,9 +15,7 @@ Str32 = lambda s: ('\0'* (32 - len(s)) + s)[-32:]
 IntToStr32 = lambda i: Str32(IntToStr(i))
 
 Sha256 = lambda data: hashlib.sha256(data).digest()
-Ripemd160 = lambda data: hashlib.new("ripemd160", data).digest()
-import ripemd
-Ripemd160 = lambda data: ripemd.new(data).digest()
+from ripemd160 import Ripemd160
 Hash160 = lambda data: Ripemd160(Sha256(data))
 
 ##################################################
@@ -57,9 +55,9 @@ def PubkeyToHash(pubkey, compress=False):
 # Query
 
 def QueryBalance(account):
-    # text = '{"final_balance":1}'
     url = 'https://blockchain.info/rawaddr/%s?limit=0' % account
     try:
+        # text = '{"final_balance":1}'
         text = URLFetch(url)
         obj = json.loads(text)
         balance = obj['final_balance']
