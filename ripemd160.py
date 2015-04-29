@@ -70,7 +70,7 @@ def Compression(state, x):
 
 def Ripemd160(data):
     ''' Equivalent to hashlib.new('ripemd160', data).digest() '''
-    data += '\x80' + '\0'*(64-(len(data)+1+8)%64) + pack('<Q', len(data)*8)
+    data += '\x80' + '\0' * ((-len(data)-1-8)%64) + pack('<Q', len(data)*8)
     state = INIT_STATE
     for i in xrange(0, len(data), 64):
         state = Compression(state, unpack_from('<16L', data, i))
@@ -79,10 +79,11 @@ def Ripemd160(data):
 ######################################################################
 if __name__ == '__main__':
     ''' Unit test '''
-    import hashlib
-    from util import IntToStr
-    for i in xrange(1000):
-        data = hashlib.sha256(IntToStr(i)).digest()
+    import hashlib, os
+    for data in (
+            [hashlib.sha256(str(i)).digest() for i in xrange(1000)] +
+            [os.urandom(i) for i in xrange(256)] +
+            []):
         assert Ripemd160(data) == hashlib.new('ripemd160', data).digest()
 
 ######################################################################
