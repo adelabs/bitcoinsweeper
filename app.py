@@ -183,6 +183,6 @@ app = WSGIApplication([
     (r'/admin', AdminHandler),
     (r'/run', MainHandler),
     (r'/.*', DefaultHandler),
-], debug=True)
+], debug=False)
 
 ######################################################################
