@@ -14,10 +14,10 @@ KR = sum(((k,) * 16 for k in CONSTS_R), ())
 
 # Bitwise functions
 FUNCTIONS = (lambda x, y, z: x ^ y ^ z                 ,
-             lambda x, y, z: (FFFFFFFF-x & z) | (x & y),
-             lambda x, y, z: (FFFFFFFF-y | x) ^ z      ,
-             lambda x, y, z: (FFFFFFFF-z & y) | (x & z),
-             lambda x, y, z: (FFFFFFFF-z | y) ^ x      )
+             lambda x, y, z: ((FFFFFFFF^x) & z) | (x & y),
+             lambda x, y, z: ((FFFFFFFF^y) | x) ^ z      ,
+             lambda x, y, z: ((FFFFFFFF^z) & y) | (x & z),
+             lambda x, y, z: ((FFFFFFFF^z) | y) ^ x      )
 FL = sum(((f,) * 16 for f in FUNCTIONS), ())
 FR = tuple(reversed(FL))
 
