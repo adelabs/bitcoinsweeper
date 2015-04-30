@@ -15,7 +15,11 @@ Str32 = lambda s: ('\0'* (32 - len(s)) + s)[-32:]
 IntToStr32 = lambda i: Str32(IntToStr(i))
 
 Sha256 = lambda data: hashlib.sha256(data).digest()
-from ripemd160 import Ripemd160
+try:
+    hashlib.new('ripemd160')
+    Ripemd160 = lambda data: hashlib.new('ripemd160', data).digest()
+except:
+    from ripemd160 import Ripemd160
 Hash160 = lambda data: Ripemd160(Sha256(data))
 
 ##################################################
